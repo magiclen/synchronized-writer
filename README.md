@@ -6,7 +6,9 @@ Synchronized Writer
 
 A tiny implement for synchronously writing data.
 
-## Example
+## Examples
+
+### SynchronizedWriter
 
 ```rust
 extern crate synchronized_writer;
@@ -38,6 +40,30 @@ for _ in 0..10 {
 }
 
 assert_eq!(b"Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!".to_vec(), *data_arc.lock().unwrap());
+```
+
+### SynchronizedOptionWriter
+
+```rust
+extern crate synchronized_writer;
+
+use synchronized_writer::SynchronizedOptionWriter;
+use std::sync::{Arc, Mutex};
+use std::io::Write;
+
+let data = Mutex::new(Some(Vec::new()));
+
+let data_arc = Arc::new(data);
+
+let mut writer = SynchronizedOptionWriter::new(data_arc.clone());
+
+writer.write(b"Hello world!").unwrap();
+
+writer.flush().unwrap();
+
+let data = data_arc.lock().unwrap().take().unwrap(); // remove out the vec from arc
+
+assert_eq!(b"Hello world!".to_vec(), data);
 ```
 
 ## Crates.io
