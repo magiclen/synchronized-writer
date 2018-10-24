@@ -1,0 +1,17 @@
+[package]
+name = "synchronized-writer"
+version = "1.0.0"
+authors = ["Magic Len <len@magiclen.org>"]
+repository = "https://github.com/magiclen/synchronized-writer"
+homepage = "https://magiclen.org/synchronized-writer"
+keywords = ["arc", "synchronized", "sync", "write", "mutex"]
+categories = ["asynchronous"]
+description= "A tiny implement for synchronously writing data."
+readme = "README.md"
+license = "MIT"
+
+[badges]
+travis-ci = { repository = "magiclen/synchronized-writer", branch = "master" }
+appveyor = { repository = "magiclen/synchronized-writer", branch = "master", service = "github" }
+
+[dependencies]
