@@ -2,6 +2,7 @@ Synchronized Writer
 ====================
 
 [![Build Status](https://travis-ci.org/magiclen/synchronized-writer.svg?branch=master)](https://travis-ci.org/magiclen/synchronized-writer)
+[![Build status](https://ci.appveyor.com/api/projects/status/sbngpx43rkw15api/branch/master?svg=true)](https://ci.appveyor.com/project/magiclen/synchronized-writer/branch/master)
 
 A tiny implement for synchronously writing data.
 

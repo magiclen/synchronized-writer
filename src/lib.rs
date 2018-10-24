@@ -36,7 +36,7 @@
 
 use std::sync::{Arc, Mutex};
 
-use std::io::{self, Write};
+use std::io::{self, Write, ErrorKind};
 
 pub struct SynchronizedWriter<W: Write> {
     inner: Arc<Mutex<W>>
@@ -52,11 +52,11 @@ impl<W: Write> SynchronizedWriter<W> {
 
 impl<W: Write> Write for SynchronizedWriter<W> {
     fn write(&mut self, buf: &[u8]) -> Result<usize, io::Error> {
-        self.inner.lock().unwrap().write(buf)
+        self.inner.lock().map_err(|err| io::Error::new(ErrorKind::WouldBlock, err.to_string()))?.write(buf)
     }
 
     fn flush(&mut self) -> Result<(), io::Error> {
-        self.inner.lock().unwrap().flush()
+        self.inner.lock().map_err(|err| io::Error::new(ErrorKind::WouldBlock, err.to_string()))?.flush()
     }
 }
 
