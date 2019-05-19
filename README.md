@@ -14,7 +14,7 @@ A tiny implement for synchronously writing data.
 extern crate synchronized_writer;
 
 use synchronized_writer::SynchronizedWriter;
-use std::sync::{Arc, Mutex, mpsc};
+use std::sync::{Arc, Mutex};
 use std::thread;
 use std::io::Write;
 
@@ -22,21 +22,20 @@ let data = Mutex::new(Vec::new());
 
 let data_arc = Arc::new(data);
 
-let (tx, rx) = mpsc::channel();
+let mut threads = Vec::with_capacity(10);
 
 for _ in 0..10 {
     let mut writer = SynchronizedWriter::new(data_arc.clone());
 
-    let tx = tx.clone();
-
-    thread::spawn(move || {
+    let thread = thread::spawn(move || {
         writer.write(b"Hello world!").unwrap();
-        tx.send(0).unwrap();
     });
+
+    threads.push(thread);
 }
 
-for _ in 0..10 {
-    rx.recv().unwrap();
+for thread in threads {
+    thread.join().unwrap();
 }
 
 assert_eq!(b"Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!".to_vec(), *data_arc.lock().unwrap());
