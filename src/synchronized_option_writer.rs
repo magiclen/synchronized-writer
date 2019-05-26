@@ -7,6 +7,7 @@ pub struct SynchronizedOptionWriter<W: Write> {
 }
 
 impl<W: Write> SynchronizedOptionWriter<W> {
+    #[inline]
     pub fn new(writer: Arc<Mutex<Option<W>>>) -> SynchronizedOptionWriter<W> {
         SynchronizedOptionWriter {
             inner: writer
@@ -15,6 +16,7 @@ impl<W: Write> SynchronizedOptionWriter<W> {
 }
 
 impl<W: Write> Write for SynchronizedOptionWriter<W> {
+    #[inline]
     fn write(&mut self, buf: &[u8]) -> Result<usize, io::Error> {
         match self.inner.lock().map_err(|err| io::Error::new(ErrorKind::WouldBlock, err.to_string()))?.deref_mut() {
             Some(writer) => writer.write(buf),
@@ -22,6 +24,7 @@ impl<W: Write> Write for SynchronizedOptionWriter<W> {
         }
     }
 
+    #[inline]
     fn flush(&mut self) -> Result<(), io::Error> {
         match self.inner.lock().map_err(|err| io::Error::new(ErrorKind::WouldBlock, err.to_string()))?.deref_mut() {
             Some(writer) => writer.flush(),
