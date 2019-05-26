@@ -64,5 +64,5 @@ assert_eq!(b"Hello world!".to_vec(), data);
 mod synchronized_writer;
 mod synchronized_option_writer;
 
-pub use synchronized_writer::SynchronizedWriter;
+pub use self::synchronized_writer::SynchronizedWriter;
 pub use synchronized_option_writer::SynchronizedOptionWriter;
