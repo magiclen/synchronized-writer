@@ -1,7 +1,7 @@
 extern crate synchronized_writer;
 
-use std::sync::{Arc, Mutex};
 use std::io::Write;
+use std::sync::{Arc, Mutex};
 
 use synchronized_writer::SynchronizedOptionWriter;
 
@@ -13,7 +13,7 @@ fn write_to_option_vec() {
 
     let mut writer = SynchronizedOptionWriter::new(data_arc.clone());
 
-    writer.write(b"Hello world!").unwrap();
+    writer.write_all(b"Hello world!").unwrap();
 
     writer.flush().unwrap();
 

@@ -1,9 +1,9 @@
 extern crate synchronized_writer;
 
+use std::io::Write;
+use std::sync::mpsc;
 use std::sync::{Arc, Mutex};
 use std::thread;
-use std::sync::mpsc;
-use std::io::Write;
 
 use synchronized_writer::SynchronizedWriter;
 
@@ -15,7 +15,7 @@ fn write_to_vec() {
 
     let mut writer = SynchronizedWriter::new(data_arc.clone());
 
-    writer.write(b"Hello world!").unwrap();
+    writer.write_all(b"Hello world!").unwrap();
 
     writer.flush().unwrap();
 
@@ -30,7 +30,7 @@ fn write_via_multi_threads() {
 
     let mut writer = SynchronizedWriter::new(data_arc.clone());
 
-    writer.write(b"Hello world!").unwrap();
+    writer.write_all(b"Hello world!").unwrap();
 
     let (tx, rx) = mpsc::channel();
 
@@ -40,7 +40,7 @@ fn write_via_multi_threads() {
         let tx = tx.clone();
 
         thread::spawn(move || {
-            writer.write(b"Hello world!").unwrap();
+            writer.write_all(b"Hello world!").unwrap();
             tx.send(0).unwrap();
         });
     }
