@@ -1,5 +1,3 @@
-extern crate synchronized_writer;
-
 use std::io::Write;
 use std::sync::{Arc, Mutex};
 

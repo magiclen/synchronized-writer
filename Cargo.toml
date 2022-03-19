@@ -2,7 +2,7 @@
 name = "synchronized-writer"
 version = "1.1.10"
 authors = ["Magic Len <len@magiclen.org>"]
-edition = "2018"
+edition = "2021"
 repository = "https://github.com/magiclen/synchronized-writer"
 homepage = "https://magiclen.org/synchronized-writer"
 keywords = ["arc", "synchronized", "sync", "write", "mutex"]

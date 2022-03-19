@@ -10,8 +10,6 @@ A tiny implement for synchronously writing data.
 ### SynchronizedWriter
 
 ```rust
-extern crate synchronized_writer;
-
 use synchronized_writer::SynchronizedWriter;
 use std::sync::{Arc, Mutex};
 use std::thread;
@@ -43,8 +41,6 @@ assert_eq!(b"Hello world!Hello world!Hello world!Hello world!Hello world!Hello w
 ### SynchronizedOptionWriter
 
 ```rust
-extern crate synchronized_writer;
-
 use synchronized_writer::SynchronizedOptionWriter;
 use std::sync::{Arc, Mutex};
 use std::io::Write;
