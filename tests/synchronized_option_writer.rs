@@ -1,5 +1,7 @@
-use std::io::Write;
-use std::sync::{Arc, Mutex};
+use std::{
+    io::Write,
+    sync::{Arc, Mutex},
+};
 
 use synchronized_writer::SynchronizedOptionWriter;
 

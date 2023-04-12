@@ -1,7 +1,8 @@
-use std::io::Write;
-use std::sync::mpsc;
-use std::sync::{Arc, Mutex};
-use std::thread;
+use std::{
+    io::Write,
+    sync::{mpsc, Arc, Mutex},
+    thread,
+};
 
 use synchronized_writer::SynchronizedWriter;
 

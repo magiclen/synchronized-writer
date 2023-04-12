@@ -1,6 +1,8 @@
-use std::io::{self, ErrorKind, Write};
-use std::ops::DerefMut;
-use std::sync::{Arc, Mutex};
+use std::{
+    io::{self, ErrorKind, Write},
+    ops::DerefMut,
+    sync::{Arc, Mutex},
+};
 
 pub struct SynchronizedOptionWriter<W: Write> {
     inner: Arc<Mutex<Option<W>>>,
@@ -10,7 +12,7 @@ impl<W: Write> SynchronizedOptionWriter<W> {
     #[inline]
     pub fn new(writer: Arc<Mutex<Option<W>>>) -> SynchronizedOptionWriter<W> {
         SynchronizedOptionWriter {
-            inner: writer,
+            inner: writer
         }
     }
 }

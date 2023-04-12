@@ -1,5 +1,7 @@
-use std::io::{self, ErrorKind, Write};
-use std::sync::{Arc, Mutex};
+use std::{
+    io::{self, ErrorKind, Write},
+    sync::{Arc, Mutex},
+};
 
 pub struct SynchronizedWriter<W: Write> {
     inner: Arc<Mutex<W>>,
@@ -9,7 +11,7 @@ impl<W: Write> SynchronizedWriter<W> {
     #[inline]
     pub fn new(writer: Arc<Mutex<W>>) -> SynchronizedWriter<W> {
         SynchronizedWriter {
-            inner: writer,
+            inner: writer
         }
     }
 }
