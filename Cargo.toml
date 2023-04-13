@@ -9,7 +9,6 @@ homepage = "https://magiclen.org/synchronized-writer"
 keywords = ["arc", "synchronized", "sync", "write", "mutex"]
 categories = ["asynchronous", "data-structures"]
 description = "A tiny implement for synchronously writing data."
-readme = "README.md"
 license = "MIT"
 include = ["src/**/*", "Cargo.toml", "README.md", "LICENSE"]
 
