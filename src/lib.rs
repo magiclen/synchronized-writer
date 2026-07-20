@@ -7,29 +7,26 @@ A tiny implement for synchronously writing data.
 
 ```rust
 use synchronized_writer::SynchronizedWriter;
+
 use std::sync::{Arc, Mutex};
+
 use std::thread;
+
 use std::io::Write;
 
 let data = Mutex::new(Vec::new());
 
 let data_arc = Arc::new(data);
 
-let mut threads = Vec::with_capacity(10);
+thread::scope(|s| {
+    for _ in 0..10 {
+        let mut writer = SynchronizedWriter::new(data_arc.clone());
 
-for _ in 0..10 {
-    let mut writer = SynchronizedWriter::new(data_arc.clone());
-
-    let thread = thread::spawn(move || {
-        writer.write(b"Hello world!").unwrap();
-    });
-
-    threads.push(thread);
-}
-
-for thread in threads {
-    thread.join().unwrap();
-}
+        s.spawn(move || {
+            writer.write_all(b"Hello world!").unwrap();
+        });
+    }
+});
 
 assert_eq!(b"Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!".to_vec(), *data_arc.lock().unwrap());
 ```
@@ -38,7 +35,9 @@ assert_eq!(b"Hello world!Hello world!Hello world!Hello world!Hello world!Hello w
 
 ```rust
 use synchronized_writer::SynchronizedOptionWriter;
+
 use std::sync::{Arc, Mutex};
+
 use std::io::Write;
 
 let data = Mutex::new(Some(Vec::new()));
@@ -47,7 +46,7 @@ let data_arc = Arc::new(data);
 
 let mut writer = SynchronizedOptionWriter::new(data_arc.clone());
 
-writer.write(b"Hello world!").unwrap();
+writer.write_all(b"Hello world!").unwrap();
 
 writer.flush().unwrap();
 
@@ -60,6 +59,7 @@ assert_eq!(b"Hello world!".to_vec(), data);
 mod synchronized_option_writer;
 mod synchronized_writer;
 
-pub use synchronized_option_writer::SynchronizedOptionWriter;
-
-pub use self::synchronized_writer::SynchronizedWriter;
+// `self::` is required here because the `synchronized_writer` module has the same name as this crate, which rustdoc passes to doctests with `--extern`.
+pub use self::{
+    synchronized_option_writer::SynchronizedOptionWriter, synchronized_writer::SynchronizedWriter,
+};

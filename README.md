@@ -11,29 +11,26 @@ A tiny implement for synchronously writing data.
 
 ```rust
 use synchronized_writer::SynchronizedWriter;
+
 use std::sync::{Arc, Mutex};
+
 use std::thread;
+
 use std::io::Write;
 
 let data = Mutex::new(Vec::new());
 
 let data_arc = Arc::new(data);
 
-let mut threads = Vec::with_capacity(10);
+thread::scope(|s| {
+    for _ in 0..10 {
+        let mut writer = SynchronizedWriter::new(data_arc.clone());
 
-for _ in 0..10 {
-    let mut writer = SynchronizedWriter::new(data_arc.clone());
-
-    let thread = thread::spawn(move || {
-        writer.write(b"Hello world!").unwrap();
-    });
-
-    threads.push(thread);
-}
-
-for thread in threads {
-    thread.join().unwrap();
-}
+        s.spawn(move || {
+            writer.write_all(b"Hello world!").unwrap();
+        });
+    }
+});
 
 assert_eq!(b"Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!".to_vec(), *data_arc.lock().unwrap());
 ```
@@ -42,7 +39,9 @@ assert_eq!(b"Hello world!Hello world!Hello world!Hello world!Hello world!Hello w
 
 ```rust
 use synchronized_writer::SynchronizedOptionWriter;
+
 use std::sync::{Arc, Mutex};
+
 use std::io::Write;
 
 let data = Mutex::new(Some(Vec::new()));
@@ -51,7 +50,7 @@ let data_arc = Arc::new(data);
 
 let mut writer = SynchronizedOptionWriter::new(data_arc.clone());
 
-writer.write(b"Hello world!").unwrap();
+writer.write_all(b"Hello world!").unwrap();
 
 writer.flush().unwrap();
 
